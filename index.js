@@ -29,16 +29,10 @@ function renderGrid (dimension) {
 let isCrossMove = true;
 
 function cellClickHandler (row, col) {
-    // Пиши код тут
     console.log(`Clicked on cell: ${row}, ${col}`);
-
     const symbol = isCrossMove ? CROSS : ZERO;
     renderSymbolInCell(symbol, row, col);
     isCrossMove = !isCrossMove;
-
-    /* Пользоваться методом для размещения символа в клетке так:
-        renderSymbolInCell(ZERO, row, col);
-     */
 }
 
 function renderSymbolInCell (symbol, row, col, color = '#333') {
@@ -59,7 +53,11 @@ function addResetListener () {
 }
 
 function resetClickHandler () {
-    console.log('reset!');
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+            renderSymbolInCell('', i, j);
+        }
+    }
 }
 
 
