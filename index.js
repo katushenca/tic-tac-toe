@@ -27,18 +27,22 @@ function renderGrid (dimension) {
 }
 
 let isCrossMove = true;
+let isFilled = [
+    [false, false, false],
+    [false, false, false],
+    [false, false, false]
+];
 
 function cellClickHandler (row, col) {
-    // Пиши код тут
     console.log(`Clicked on cell: ${row}, ${col}`);
+    console.log(isFilled)
 
-    const symbol = isCrossMove ? CROSS : ZERO;
-    renderSymbolInCell(symbol, row, col);
-    isCrossMove = !isCrossMove;
-
-    /* Пользоваться методом для размещения символа в клетке так:
-        renderSymbolInCell(ZERO, row, col);
-     */
+    if (!isFilled[col][row]) {
+        const symbol = isCrossMove ? CROSS : ZERO;
+        renderSymbolInCell(symbol, row, col);
+        isCrossMove = !isCrossMove;
+        isFilled[col][row] = true;
+    }
 }
 
 function renderSymbolInCell (symbol, row, col, color = '#333') {
