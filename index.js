@@ -27,6 +27,7 @@ function renderGrid (dimension) {
 }
 
 let isCrossMove = true;
+let isWin = false;
 let isFilled = [
     [false, false, false],
     [false, false, false],
@@ -81,7 +82,7 @@ function cellClickHandler (row, col) {
     console.log(`Clicked on cell: ${row}, ${col}`);
     console.log(isFilled)
 
-    if (!isFilled[col][row]) {
+    if (!isFilled[col][row] && !isWin) {
         const symbol = isCrossMove ? CROSS : ZERO;
         renderSymbolInCell(symbol, row, col);
 
@@ -90,6 +91,7 @@ function cellClickHandler (row, col) {
         if (isCrossMove){
             crosses[col][row] = true;
             if (checkWin(crosses)){
+                isWin = true;
                 setTimeout(() => alert('CROSS WON!'), 0);
 
             }
@@ -97,10 +99,11 @@ function cellClickHandler (row, col) {
         else{
             zeros[col][row] = true;
             if (checkWin(zeros)){
+                isWin = true;
                 setTimeout(() => alert('ZERO WON!'), 0);
             }
         }
-        if (isFilled.every((c) => c.every((k) => k))){
+        if (!isWin && isFilled.every((c) => c.every((k) => k))){
             setTimeout(() => alert('Победила дружба'), 0);
         }
         isCrossMove = !isCrossMove;
@@ -134,7 +137,7 @@ function resetClickHandler () {
         }
     }
 
-
+    isWin = false;
     isCrossMove = true;
 }
 
