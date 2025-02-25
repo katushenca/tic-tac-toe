@@ -14,6 +14,7 @@ function startGame () {
 function renderGrid (dimension) {
     container.innerHTML = '';
 
+
     for (let i = 0; i < dimension; i++) {
         const row = document.createElement('tr');
         for (let j = 0; j < dimension; j++) {
