@@ -100,7 +100,9 @@ function cellClickHandler (row, col) {
                 setTimeout(() => alert('ZERO WON!'), 0);
             }
         }
-
+        if (isFilled.every((c) => c.every((k) => k))){
+            setTimeout(() => alert('Победила дружба'), 0);
+        }
         isCrossMove = !isCrossMove;
     }
 }
