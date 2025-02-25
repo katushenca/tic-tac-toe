@@ -47,22 +47,43 @@ let zeros = [
     [false, false, false]
 ];
 
+let wonCells = [
+    [false, false, false],
+    [false, false, false],
+    [false, false, false]
+];
 
 function checkWin(array){
-    for (const arr of array) {
-        if(arr.every((c) => c)){
+
+
+    for (let i = 0; i < 3; i++) {
+        let c = 0;
+        wonCells.forEach((f) => f.forEach(() => false));
+        for (let j = 0; j < 3; j++) {
+            if (array[i][j]){
+                c++;
+            }
+        }
+        if (c === 3){
+            for (let j = 0; j < 3; j++) {
+                wonCells[i][j] = true;
+            }
             return true;
         }
     }
 
     for (let i = 0; i < 3; i++) {
         let c = 0;
+        wonCells.forEach((f) => f.forEach(() => false));
         for (let j = 0; j < 3; j++) {
             if (array[j][i]){
                 c++;
             }
         }
         if (c === 3){
+            for (let j = 0; j < 3; j++) {
+                wonCells[j][i] = true;
+            }
             return true;
         }
     }
@@ -73,16 +94,42 @@ function checkWin(array){
             count++;
         }
     }
+    if (count === 3){
+        for (let i = 0; i < 3; i++) {
+            wonCells[i][i] = true;
+        }
+        return true;
+    }
 
-    return count === 3;
+    count = 0;
+    for (let i = 2; i > -1; i--) {
+        if (array[i][2 - i]){
+            count++;
+        }
+    }
+    if (count === 3){
+        for (let i = 2; i > -1; i--) {
+            wonCells[i][2 - i] = true;
+        }
+        return true;
+    }
+
+    return false;
 }
 
 
-function cellClickHandler (row, col) {
-    // Пиши код тут
-    console.log(`Clicked on cell: ${row}, ${col}`);
-    console.log(isFilled)
 
+function colorizeWinner(winner){
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+            if (wonCells[j][i]){
+                renderSymbolInCell(winner, i, j, '#FF0000')
+            }
+        }
+    }
+}
+
+function cellClickHandler (row, col) {
     if (!isFilled[col][row] && !isWin) {
         const symbol = isCrossMove ? CROSS : ZERO;
         renderSymbolInCell(symbol, row, col);
@@ -93,14 +140,15 @@ function cellClickHandler (row, col) {
             crosses[col][row] = true;
             if (checkWin(crosses)){
                 isWin = true;
+                colorizeWinner(CROSS);
                 setTimeout(() => alert('CROSS WON!'), 0);
-
             }
         }
         else{
             zeros[col][row] = true;
             if (checkWin(zeros)){
                 isWin = true;
+                colorizeWinner(ZERO);
                 setTimeout(() => alert('ZERO WON!'), 0);
             }
         }
@@ -135,6 +183,7 @@ function resetClickHandler () {
             isFilled[i][j] = false;
             crosses[i][j] = false;
             zeros[i][j] = false;
+            wonCells[i][j] = false;
         }
     }
 
