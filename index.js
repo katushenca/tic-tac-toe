@@ -33,6 +33,49 @@ let isFilled = [
     [false, false, false]
 ];
 
+let crosses = [
+    [false, false, false],
+    [false, false, false],
+    [false, false, false]
+];
+
+let zeros = [
+    [false, false, false],
+    [false, false, false],
+    [false, false, false]
+];
+
+
+function checkWin(array){
+    for (const arr of array) {
+        if(arr.every((c) => c)){
+            return true;
+        }
+    }
+
+    for (let i = 0; i < 3; i++) {
+        let c = 0;
+        for (let j = 0; j < 3; j++) {
+            if (array[j][i]){
+                c++;
+            }
+        }
+        if (c === 3){
+            return true;
+        }
+    }
+
+    let count = 0;
+    for (let i = 0; i < 3; i++) {
+        if (array[i][i]){
+            count++;
+        }
+    }
+
+    return count === 3;
+}
+
+
 function cellClickHandler (row, col) {
     // Пиши код тут
     console.log(`Clicked on cell: ${row}, ${col}`);
@@ -41,8 +84,24 @@ function cellClickHandler (row, col) {
     if (!isFilled[col][row]) {
         const symbol = isCrossMove ? CROSS : ZERO;
         renderSymbolInCell(symbol, row, col);
-        isCrossMove = !isCrossMove;
+
+
         isFilled[col][row] = true;
+        if (isCrossMove){
+            crosses[col][row] = true;
+            if (checkWin(crosses)){
+                setTimeout(() => alert('CROSS WON!'), 0);
+
+            }
+        }
+        else{
+            zeros[col][row] = true;
+            if (checkWin(zeros)){
+                setTimeout(() => alert('ZERO WON!'), 0);
+            }
+        }
+
+        isCrossMove = !isCrossMove;
     }
 }
 
@@ -67,8 +126,14 @@ function resetClickHandler () {
     for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++) {
             renderSymbolInCell('', i, j);
+            isFilled[i][j] = false;
+            crosses[i][j] = false;
+            zeros[i][j] = false;
         }
     }
+
+
+    isCrossMove = true;
 }
 
 
